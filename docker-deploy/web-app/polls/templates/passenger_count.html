@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cancel Ride - Passenger Count</title>
+</head>
+<body>
+    <h2>Cancel Ride - Passenger Count</h2>
+    <p>Please specify the number of passengers you have:</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

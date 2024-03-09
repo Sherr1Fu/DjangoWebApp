@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/welcome.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome</h1>
+        <div class="buttons">
+            <button id="createAccountBtnDriver">Create Account (Driver)</button>
+            <button id="createAccountBtnRider">Create Account (Rider)</button>
+            <button id="loginBtn">Login</button>
+        </div>
+    </div>
+
+    <script src="{% static 'js/welcome.js' %}"></script>
+</body>
+</html>

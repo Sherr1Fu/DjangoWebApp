@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accept Ride</title>
+</head>
+<body>
+    <h1>Available Rides for Acceptance</h1>
+    {% if rides %}
+        <ul>
+            {% for ride in rides %}
+                <li>{{ ride.start_location }} to {{ ride.end_location }} - {{ ride.start_time }} - {{ ride.arrival_time }}</li>
+                {% if ride.status == 'requested' %}
+                    <a href="{% url 'confirm_ride' ride.id %}" class="confirm-btn">Confirm</a>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No rides available for acceptance.</p>
+    {% endif %}
+    <a href="{% url 'main_view' %}">Back</a>
+</body>
+</html>

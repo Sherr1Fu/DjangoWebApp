@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride Confirmation</title>
+</head>
+<body>
+    <h2>Ride Details</h2>
+    <p>Created by: {{ ride.owner.username }}</p>
+    <p>Sharers: 
+        <ul>
+            {% for sharer in ride.sharer.all %}
+                <li>{{ sharer.username }}</li>
+            {% endfor %}
+        </ul>
+    </p>
+    <p>Email: {{ ride.owner.email }}</p>
+
+    <p>Start Location: {{ ride.start_location }}</p>
+    <p>End Location: {{ ride.end_location }}</p>
+    <p>Start Time: {{ ride.start_time }}</p>
+    <p>Arrival Time: {{ ride.arrival_time }}</p>
+    <p>Status: {{ ride.status }}</p>
+    <p>Vehicle Type: {{ ride.vehicle_type }}</p>
+    <p>Total Passengers: {{ ride.total_passengers }}</p>
+    <p>Special Info: {{ ride.special_info }}</p>
+
+    <h2>Driver Information</h2>
+    <p>Username: {{ ride.driver.username }}</p>
+    <p>Name: {{ ride.driver.first_name }} {{ ride.driver.last_name }}</p>
+    <p>Email: {{ ride.driver.email }}</p>
+    <p>License Plate: {{ ride.driver.vehicle.license_plate}}</p>
+    <p>Special Info: {{ ride.driver.vehicle.special_info }}</p>
+</body>
+</html>

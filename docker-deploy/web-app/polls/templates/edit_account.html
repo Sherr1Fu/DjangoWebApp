@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Account</title>
+</head>
+<body>
+    <h1>Edit Your Account</h1>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        {% if vehicle_form %}
+            {{ vehicle_form.as_p }}
+            <a href="{% url 'driver_rider' %}">No longer driver</a>
+        {% else %}
+            <a href="{% url 'rider_driver' %}">Be a driver</a>
+        {% endif %}
+
+        <button type="submit">Update</button>
+    </form>
+    <a href="{% url 'main_view' %}">Back</a>
+    <a href="{% url 'password_change' %}">Change Password</a>   
+</body>
+</html>

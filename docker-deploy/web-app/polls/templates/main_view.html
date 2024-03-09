@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Rides</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .logout-btn, .account-btn, .requestride-btn, .requestshare-btn, .acceptride-btn {
+            background-color: #d9534f;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .logout-btn:hover, .account-btn:hover, .requestride-btn:hover, .requestshare-btn:hover, .acceptride-btn:hover {
+            background-color: #c9302c;
+        }
+        .ride {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .ride-info {
+            font-size: 16px;
+        }
+        .ride-location {
+            font-weight: bold;
+            color: #333;
+        }
+        .ride-status {
+            color: #d9534f;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+        <a href="{% url 'edit_account' %}" class="account-btn">Account</a>
+        <a href="{% url 'request_ride' %}" class="requestride-btn">Request a Ride</a>
+        <a href="{% url 'request_share_ride' %}" class="requestshare-btn">Request a Share Ride</a>
+        {% if user.is_driver %}
+            <a href="{% url 'accept_ride' %}" class="acceptride-btn">Accept a Ride</a>
+        {% endif %}
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="container">
+      <h2>Non-Complete Rides (As Rider)</h2>
+      {% if non_complete_rides %}
+          <ul>
+              {% for ride in non_complete_rides %}
+                  <li>
+                      {{ ride.start_location }} to {{ ride.end_location }} - {{ ride.status }}
+                      {% if ride.status == 'requested' %}
+                          <a href="{% url 'edit_ride' ride.id %}" class="edit-btn">Edit</a>
+                          <a href="{% url 'ride_details' ride.id %}" class="view-btn">View</a>
+                          <form action="{% url 'cancel_ride' ride.id %}" method="post" style="display: inline;">
+                              {% csrf_token %}
+                              <button type="submit">Cancel</button>
+                          </form>
+                      {% endif %}
+                      {% if ride.status == 'confirmed' %}
+                          <a href="{% url 'ride_details' ride.id %}" class="view-btn">View</a>
+                      {% endif %}
+                  </li>
+              {% endfor %}
+          </ul>
+      {% else %}
+          <p>No non-complete rides found.</p>
+      {% endif %}
+
+      {% if user.is_driver %}
+        <h2>Confirmed Rides (As Driver)</h2>
+            {% if confirmed_rides %}
+                <ul>
+                    {% for ride in confirmed_rides %}
+                        <li>
+                            {{ ride.start_location }} to {{ ride.end_location }} - {{ ride.start_time }} - {{ ride.arrival_time }}
+                            <a href="{% url 'ride_details' ride.id %}" class="view-btn">View Details</a>
+                            <a href="{% url 'finish_ride' ride.id %}" class="finish-btn">Finish</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No confirmed rides found.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>

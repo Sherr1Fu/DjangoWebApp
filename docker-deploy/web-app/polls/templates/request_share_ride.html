@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shared Rides</title>
+    <style>
+        .ride-details {
+            display: inline-block;
+            vertical-align: top;
+            margin-right: 10px; /* Adjust as needed */
+        }
+        .join-form {
+            display: inline-block;
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+    <h1>Shared Rides</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ ride_form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Shared Rides List</h2>
+    <ul>
+        {% for ride in shared_rides %}
+            <li>
+                <div class="ride-details">
+                    {{ ride.start_location }} to {{ ride.end_location }} - {{ ride.start_time }} - {{ ride.arrival_time }}
+                </div>
+                <div class="join-form">
+                    {% if ride.status == 'requested' %}
+                        <form method="post" action="{% url 'join_ride' ride.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="total_passengers" value="{{ total_passengers }}">
+                            <button type="submit" class="join-link">Join</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </li>
+        {% empty %}
+            <li>No shared rides found.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'main_view' %}">Back</a>
+</body>
+</html>

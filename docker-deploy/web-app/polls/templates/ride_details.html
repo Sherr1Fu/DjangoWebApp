@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section-title {
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .details p {
+            margin: 5px 0;
+        }
+        .details p strong {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Ride Details</h2>
+        <div class="section">
+            <div class="details">
+                <p><strong>Created by:</strong> {{ ride.owner.username }}</p>
+                <p><strong>Sharers: </strong>
+                    <ul>
+                        {% for sharer in ride.sharer.all %}
+                            <li>{{ sharer.username }}</li>
+                        {% endfor %}
+                    </ul>
+                </p>
+                <p><strong>Start Location:</strong> {{ ride.start_location }}</p>
+                <p><strong>End Location:</strong> {{ ride.end_location }}</p>
+                <p><strong>Start Time:</strong> {{ ride.start_time }}</p>
+                <p><strong>Arrival Time:</strong> {{ ride.arrival_time }}</p>
+                <p><strong>Status:</strong> {{ ride.status }}</p>
+            </div>
+        </div>
+
+        <!-- Display driver and vehicle information if available -->
+        {% if ride.driver is not None %}
+        <div class="section">
+            <h3 class="section-title">Driver Information</h3>
+            <div class="details">
+                <p><strong>Username:</strong> {{ ride.driver.username }}</p>
+                <p><strong>Name:</strong> {{ ride.driver.name }}</p>
+                <p><strong>Email:</strong> {{ ride.driver.email }}</p>
+                <p><strong>License Plate:</strong> {{ ride.driver.vehicle.license_plate}}</p>
+                <p><strong>Special Info:</strong> {{ ride.driver.vehicle.special_info }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="window.location.href='{% url 'main_view' %}'">Back</button>
+    </div>
+</body>
+</html>
